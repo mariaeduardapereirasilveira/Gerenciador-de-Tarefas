@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js"></script>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="cabecalho">
+            <div>
+                <p class="subtitulo">ORGANIZE SUA ROTINA</p>
+                <h1>Gerenciador de Tarefas</h1>
+                <p class="descricao">
+                    Organize suas atividades, acompanhe seu progresso
+                    e mantenha tudo em ordem.
+                </p>
+            </div>
+
+            <div class="icone-cabecalho">
+                ✓
+            </div>
+        </header>
+
+
+        <section class="indicadores">
+
+            <div class="indicador">
+                <div class="icone indicador-total">☰</div>
+                <div>
+                    <span>Total de tarefas</span>
+                    <strong id="total-tarefas">0</strong>
+                </div>
+            </div>
+
+            <div class="indicador">
+                <div class="icone indicador-pendente">◷</div>
+                <div>
+                    <span>Pendentes</span>
+                    <strong id="tarefas-pendentes">0</strong>
+                </div>
+            </div>
+
+            <div class="indicador">
+                <div class="icone indicador-concluida">✓</div>
+                <div>
+                    <span>Concluídas</span>
+                    <strong id="tarefas-concluidas">0</strong>
+                </div>
+            </div>
+
+        </section>
+
+
+        <section class="cadastro">
+
+            <div class="titulo-secao">
+                <div class="icone-titulo">＋</div>
+                <div>
+                    <h2>Nova tarefa</h2>
+                    <p>Preencha os dados para adicionar uma tarefa.</p>
+                </div>
+            </div>
+
+            <form id="form-tarefa">
+
+                <div class="campo campo-descricao">
+                    <label for="descricao">Descrição</label>
+                    <input
+                        type="text"
+                        id="descricao"
+                        name="descricao"
+                        placeholder="Ex.: Fazer exercícios de JavaScript"
+                        required
+                    >
+                </div>
+
+                <div class="linha-formulario">
+
+                    <div class="campo">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="Estudos">Estudos</option>
+                            <option value="Trabalho">Trabalho</option>
+                            <option value="Pessoal">Pessoal</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="prioridade">Prioridade</label>
+                        <select id="prioridade" name="prioridade" required>
+                            <option value="">Selecione a prioridade</option>
+                            <option value="Baixa">Baixa</option>
+                            <option value="Média">Média</option>
+                            <option value="Alta">Alta</option>
+                        </select>
+                    </div>
+
+                    <div class="campo">
+                        <label for="data">Data de conclusão</label>
+                        <input
+                            type="date"
+                            id="data"
+                            name="data"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+                <button type="submit" class="botao-adicionar">
+                    <span>＋</span>
+                    Adicionar tarefa
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <section class="filtros">
+
+            <div class="titulo-filtros">
+                <h2>Minhas tarefas</h2>
+                <span id="contador-tarefas">0 tarefas</span>
+            </div>
+
+            <div class="controles-filtro">
+
+                <div class="campo-filtro">
+                    <label for="filtro-status">Situação</label>
+                    <select id="filtro-status">
+                        <option value="todas">Todas</option>
+                        <option value="pendentes">Pendentes</option>
+                        <option value="concluidas">Concluídas</option>
+                    </select>
+                </div>
+
+                <div class="campo-filtro">
+                    <label for="filtro-categoria">Categoria</label>
+                    <select id="filtro-categoria">
+                        <option value="todas">Todas</option>
+                        <option value="Estudos">Estudos</option>
+                        <option value="Trabalho">Trabalho</option>
+                        <option value="Pessoal">Pessoal</option>
+                        <option value="Casa">Casa</option>
+                        <option value="Outros">Outros</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="lista-tarefas" id="lista-tarefas">
+
+            <div class="estado-vazio" id="estado-vazio">
+                <div class="icone-vazio">♡</div>
+                <h3>Nenhuma tarefa cadastrada</h3>
+                <p>Adicione uma tarefa para começar!</p>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>
