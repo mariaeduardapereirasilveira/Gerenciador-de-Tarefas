@@ -1,5 +1,5 @@
 let tarefas = [];
-
+// localStorage.removeItem("tarefas");
 const formTarefa = document.querySelector("#form-tarefa");
 const listaTarefas = document.querySelector("#lista-tarefas");
 
@@ -9,9 +9,39 @@ const tarefasPendentes = document.querySelector("#tarefas-pendentes");
 const tarefasConcluidas = document.querySelector("#tarefas-concluidas");
 
 
+const contadorTarefas = document.querySelector("#contador-tarefas");
+
+
+const  filtro = 
+{ 
+    situacao: "todas",
+    categoria: "todas",
+}
+
+
+const selectSituacao = document.querySelector("#filtro-status");
+const selectCategoria = document.querySelector("#filtro-categoria");
+
+selectSituacao.addEventListener("change", () => {
+
+    filtro.situacao = selectSituacao.value;
+    renderizarTarefa(filtro);
+
+});
+
+selectCategoria.addEventListener("change", () => {
+
+    filtro.categoria = selectCategoria.value;
+    renderizarTarefa(filtro);
+
+});
+
+
+
 
 function concluirTarefa(index) {
-    tarefas[index].concluida = true;
+    tarefas[index].status = "concluida";
+    
 
     salvarTarefas();
     renderizarTarefa();
@@ -27,20 +57,21 @@ function atualizarIndicadores() {
     let pendentes = 0;
     let concluida = 0;
     tarefas.forEach((tarefa) => {
-        if (tarefa.concluida == false) {
+        if (tarefa.status == "pendente") {
             pendentes++;
         }
 
-        if (tarefa.concluida == true) {
+        if (tarefa.status == "concluida") {
             concluida++;
         }
     });
     totalTarefas.textContent = tarefas.length;
     tarefasConcluidas.textContent = concluida;
     tarefasPendentes.textContent = pendentes;
+    contadorTarefas.textContent = `${tarefas.length} tarefa(s)`;
 }
 
-function carrgarTarefas() {
+function carregarTarefas() {
     const tarefasSalvas = localStorage.getItem("tarefas");
 
     if (tarefasSalvas) {
@@ -48,6 +79,7 @@ function carrgarTarefas() {
     }
 
     renderizarTarefa();
+    //renderizarTarefa();
     atualizarIndicadores();
 }
 
@@ -70,7 +102,7 @@ function adicionarTarefa() {
             categoria: categoria.value,
             prioridade: prioridade.value,
             data: data.value,
-            concluida: false
+            status: "pendente"
         }
 
         tarefas.push(tarefa);
@@ -84,60 +116,109 @@ function adicionarTarefa() {
 }
 
 adicionarTarefa();
-carrgarTarefas()
+carregarTarefas()
 
 
 
-function renderizarTarefa() {
+function renderizarTarefa(filtros = filtro) {
+    
+    if(filtros === undefined){
+        console.log("não enviou filtros");
+    }
+    else{
+        console.log(filtros);
+    }
+
+
     listaTarefas.innerHTML = "";
 
-    tarefas.forEach((tarefa, index) => {
+const tarefasFiltradas = tarefas.filter((tarefa) => {
+     const situacaoOk =
+            filtros.situacao === "todas" ||
+            tarefa.status === filtros.situacao;
 
-        const card = document.createElement("div");
+        const categoriaOk =
+            filtros.categoria === "todas" ||
+            tarefa.categoria === filtros.categoria;
 
-        card.classList.add("tarefa");
+        return situacaoOk && categoriaOk;
+})
 
-        card.innerHTML = `
-            <div class="tarefa-conteudo">
 
-                <h3 class="tarefa-descricao">
-                    ${tarefa.descricao}
-                </h3>
 
-                <div class="tarefa-informacoes">
+// console.log("Tarefas filtradas:", tarefasFiltradas);
+// console.log("Quantidade:", tarefasFiltradas.length);
 
-                    <span>${tarefa.categoria}</span>
 
-                    <span>${tarefa.prioridade}</span>
-
-                    <span>${tarefa.data}</span>
-
-                </div>
-
+  if(tarefasFiltradas.length === 0){
+     listaTarefas.innerHTML = `
+        <div class="estado-vazio">
+            <div class="icone-vazio">
+                ✓
             </div>
 
-            <div class="tarefa-acoes">
+            <h3>Nenhuma tarefa encontrada</h3>
 
-                <button class="botao botao-concluir" data-index= "${index}">
-                    Concluir
-                </button>
+            <p>
+                Não existem tarefas que correspondam aos filtros selecionados.
+            </p>
+        </div>
+    `;
 
-                <button class="botao botao-excluir">
-                    Excluir
-                </button>
+    return;
+  };
 
-            </div>
-        `;
-        const btnConcluir = document.querySelector(".botao-concluir");
-
-        btnConcluir.addEventListener("click", () => {
-            const index = btnConcluir.dataset.index;
-            concluirTarefa(index);
+      tarefasFiltradas.forEach((tarefa, index) => {
+          
+          const card = document.createElement("div");
+          
+          card.classList.add("tarefa");
+          
+          card.innerHTML = `
+          <div class="tarefa-conteudo">
+          
+          <h3 class="tarefa-descricao">
+          ${tarefa.descricao}
+          </h3>
+          
+          <div class="tarefa-informacoes">
+          
+          <span>${tarefa.categoria}</span>
+          
+          <span>${tarefa.prioridade}</span>
+          
+          <span>${tarefa.data}</span>
+          
+          </div>
+          
+          </div>
+          
+          <div class="tarefa-acoes">
+          
+          <button class="botao botao-concluir" data-index= "${index}">
+          Concluir
+          </button>
+          
+          <button class="botao botao-excluir">
+          Excluir
+          </button>
+          
+          </div>
+          `;
+          
+          
+          listaTarefas.appendChild(card);
+          
+          const btnConcluir = document.querySelector(".botao-concluir");
+          
+          btnConcluir.addEventListener("click", () => {
+              const index = btnConcluir.dataset.index;
+              concluirTarefa(index);
+            });
+            
         });
+    
+    }
 
 
-        listaTarefas.appendChild(card);
-
-    });
-}
 
