@@ -573,3 +573,48 @@ h1 {
         padding: 17px;
     }
 }
+
+
+.toast {
+      position: fixed;
+    top: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    padding: 15px 25px;
+    border-radius: 12px;
+
+    min-width: 300px;
+
+    background-color: white;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+
+    border-left: 5px solid;
+
+    z-index: 1000;
+}
+
+.toast.success {
+    background-color: rgba(103, 223, 103, 0.918);
+    color: white;
+     border-left-color: #188b09;
+}
+
+.toast.error {
+    background-color: rgb(236, 100, 100);
+    color: white;
+     border-left-color: #e91635;
+}
+
+.toast.warning {
+    background-color: rgb(252, 236, 10);
+    color: white;
+     border-left-color: #f0d123;
+}
+
+
+
+.tarefa.concluida .tarefa-descricao {
+    text-decoration: line-through;
+}
